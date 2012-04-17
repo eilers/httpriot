@@ -130,12 +130,13 @@ static NSMutableDictionary *attributes;
     NSMutableDictionary *defaultParams = [NSMutableDictionary dictionaryWithDictionary:[self defaultParams]];
     [defaultParams addEntriesFromDictionary:[options valueForKey:kHRClassAttributesParamsKey]];
     
-    options = [NSMutableDictionary dictionaryWithDictionary:options];
-    [(NSMutableDictionary *)options setObject:defaultParams forKey:kHRClassAttributesParamsKey];
-    NSMutableDictionary *opts = [NSMutableDictionary dictionaryWithDictionary:[self classAttributes]];
-    [opts addEntriesFromDictionary:options];
+    NSMutableDictionary * newOptions = [options mutableCopy];
+    
+    [newOptions setObject:defaultParams forKey:kHRClassAttributesParamsKey];
+    NSMutableDictionary *opts = [NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)[self classAttributes]];
+    [opts addEntriesFromDictionary:(NSDictionary *)newOptions];
     [opts removeObjectForKey:kHRClassAttributesDefaultParamsKey];
-
+    
     return opts;
 }
 @end
