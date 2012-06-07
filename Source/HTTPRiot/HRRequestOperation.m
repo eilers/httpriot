@@ -220,7 +220,7 @@
     
     if(username || password) {
         NSString *userPass = [NSString stringWithFormat:@"%@:%@", username, password];
-        NSData   *upData = [userPass dataUsingEncoding:NSUTF8StringEncoding];
+        NSData   *upData = [userPass dataUsingEncoding:NSISOLatin1StringEncoding];
         NSString *encodedUserPass = [HRBase64 encode:upData];
         NSString *basicHeader = [NSString stringWithFormat:@"Basic %@", encodedUserPass];
         [request setValue:basicHeader forHTTPHeaderField:@"Authorization"];
