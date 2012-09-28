@@ -17,7 +17,8 @@
         [objects addObject:obj1];
         va_start(args, obj1);         
         
-        while (argitem = va_arg(args, id)) {
+        while ((argitem = va_arg(args, id))) 
+        {
             [objects addObject:argitem];               
         }
         
