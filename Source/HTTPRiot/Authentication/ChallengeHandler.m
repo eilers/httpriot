@@ -74,7 +74,8 @@ static NSMutableDictionary * sAuthenticationMethodToHandlerClassArray;
     // TODO: Add handler registration!
     static BOOL sHaveRegistered;
     if ( ! sHaveRegistered ) {
-        for (NSString * className in [NSArray arrayWithObjects:@"AuthenticationChallengeHandler", @"ServerTrustChallengeHandler", @"ClientIdentityChallengeHandler", nil]) {
+        NSArray* challengeHandlerNames = (NSArray*) [[NSUserDefaults standardUserDefaults] objectForKey:@"ChallengeHandlers"];
+        for (NSString * className in challengeHandlerNames  ) {
             Class   cls;
 
             cls = NSClassFromString(className);
