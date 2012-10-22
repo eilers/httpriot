@@ -141,6 +141,11 @@ static NSMutableDictionary *attributes;
     NSMutableDictionary *opts = [NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)[self classAttributes]];
     [opts addEntriesFromDictionary:(NSDictionary *)newOptions];
     [opts removeObjectForKey:kHRClassAttributesDefaultParamsKey];
+    
+    id parentViewController = [[self classAttributes] objectForKey:kHRClassParentViewControllerKey];
+    if ( parentViewController )
+    { [opts setObject:parentViewController forKey:kHRClassParentViewControllerKey]; }
+    
     [newOptions release];
     return opts;
 }
