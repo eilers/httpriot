@@ -1091,10 +1091,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-					"-DNS_BLOCK_ASSERTIONS=1",
-				);
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
