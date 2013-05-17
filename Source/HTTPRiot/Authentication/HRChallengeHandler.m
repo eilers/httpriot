@@ -1,5 +1,5 @@
 /*
-    File:       ChallengeHandler.m
+    File:       HRChallengeHandler.m
 
     Contains:   Base class for handling various authentication challenges.
 
@@ -51,13 +51,13 @@
 
 */
 
-#import "ChallengeHandler.h"
+#import "HRChallengeHandler.h"
 
-@interface ChallengeHandler ()
+@interface HRChallengeHandler ()
 @property (nonatomic, assign, readwrite, getter=isRunning)  BOOL        running;
 @end
 
-@implementation ChallengeHandler
+@implementation HRChallengeHandler
 
 static NSMutableDictionary * sAuthenticationMethodToHandlerClassArray;
 
@@ -110,9 +110,9 @@ static NSMutableDictionary * sAuthenticationMethodToHandlerClassArray;
     return result;
 }
 
-+ (ChallengeHandler *)handlerForChallenge:(NSURLAuthenticationChallenge *)challenge parentViewController:(UIViewController *)parentViewController
++ (HRChallengeHandler *)handlerForChallenge:(NSURLAuthenticationChallenge *)challenge parentViewController:(UIViewController *)parentViewController
 {
-    ChallengeHandler *  result;
+    HRChallengeHandler *  result;
     NSString *          authenticationMethod;
     NSMutableArray *    handlerClasses;
 
@@ -293,7 +293,7 @@ static NSMutableDictionary * sAuthenticationMethodToHandlerClassArray;
     assert( ! self.running );
     if (self.credential == nil) {
         [[self.challenge sender] cancelAuthenticationChallenge:self.challenge];
-    } else if (self.credential == [ChallengeHandler noCredential]) {
+    } else if (self.credential == [HRChallengeHandler noCredential]) {
         [[self.challenge sender] continueWithoutCredentialForAuthenticationChallenge:self.challenge];
     } else {
         [[self.challenge sender] useCredential:self.credential forAuthenticationChallenge:self.challenge];

@@ -1,5 +1,5 @@
 /*
-    File:       ChallengeHandler.h
+    File:       HRChallengeHandler.h
 
     Contains:   Base class for handling various authentication challenges.
 
@@ -64,14 +64,14 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol ChallengeHandlerDelegate;
+@protocol HRChallengeHandlerDelegate;
 
-@interface ChallengeHandler : NSObject
+@interface HRChallengeHandler : NSObject
 {
     NSURLAuthenticationChallenge *  _challenge;
     UIViewController *              _parentViewController;
     NSURLCredential *               _credential;
-    id<ChallengeHandlerDelegate>    _delegate;
+    id<HRChallengeHandlerDelegate>    _delegate;
     BOOL                            _running;
 }
 
@@ -79,7 +79,7 @@
     // Returns true if we have a challenge handler that will handle challenges 
     // in the specified protection space.
 
-+ (ChallengeHandler *)handlerForChallenge:(NSURLAuthenticationChallenge *)challenge parentViewController:(UIViewController *)parentViewController;
++ (HRChallengeHandler *)handlerForChallenge:(NSURLAuthenticationChallenge *)challenge parentViewController:(UIViewController *)parentViewController;
     // Returns a challenge handler that's prepared to handle the specified challenge 
     // (and that presents any modal view controllers on top of parentViewController). 
     // Alternatively, returns nil if no one is prepared to handle this challenge.
@@ -100,7 +100,7 @@
     // delegate method, or you've called -stop yourself), this will be nil, or 
     // +noCredential, or an actual credential. 
     
-@property (nonatomic, assign, readwrite) id<ChallengeHandlerDelegate>   delegate;
+@property (nonatomic, assign, readwrite) id<HRChallengeHandlerDelegate>   delegate;
 
 @property (nonatomic, assign, readonly, getter=isRunning)  BOOL         running;
     // This is YES if the challenge UI is currently being displayed.
@@ -171,11 +171,11 @@
 
 @end
 
-@protocol ChallengeHandlerDelegate <NSObject>
+@protocol HRChallengeHandlerDelegate <NSObject>
 
 @required
 
-- (void)challengeHandlerDidFinish:(ChallengeHandler *)handler;
+- (void)challengeHandlerDidFinish:(HRChallengeHandler *)handler;
     // Called by the challenge handler when the user completes the challenge 
     // UI.  The result of the challenge will be available via the credential
     // property.  Call -resolve to apply this to the NSURLAuthenticationChallenge.

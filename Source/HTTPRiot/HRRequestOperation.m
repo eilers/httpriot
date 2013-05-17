@@ -207,7 +207,7 @@
     assert( conn == _connection );
     assert( protectionSpace != nil );
     
-    result = [ChallengeHandler supportsProtectionSpace:protectionSpace];
+    result = [HRChallengeHandler supportsProtectionSpace:protectionSpace];
     HRLOG(@"canAuthenticateAgainstProtectionSpace %@ -> %d", [protectionSpace authenticationMethod], result);
     return result;
 }
@@ -239,7 +239,7 @@
     if ( [challenge previousFailureCount] < 5 
         && self.parentViewController )
     {
-        _currentChallenge = [[ChallengeHandler handlerForChallenge:challenge parentViewController:self.parentViewController] retain];
+        _currentChallenge = [[HRChallengeHandler handlerForChallenge:challenge parentViewController:self.parentViewController] retain];
         if (_currentChallenge == nil) {
             [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
         } else {
@@ -416,10 +416,10 @@
 // Called by the authentication challenge handler once the challenge is 
 // resolved.  We twiddle our internal state and then call the -resolve method 
 // to apply the challenge results to the NSURLAuthenticationChallenge.
-- (void)challengeHandlerDidFinish:(ChallengeHandler *)handler
+- (void)challengeHandlerDidFinish:(HRChallengeHandler *)handler
 {
 #pragma unused(handler)
-    ChallengeHandler *  challenge;
+    HRChallengeHandler *  challenge;
     
     assert(handler == _currentChallenge);
     
