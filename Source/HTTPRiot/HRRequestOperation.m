@@ -285,53 +285,102 @@
     }
 }
 
-- (NSMutableURLRequest *)configuredRequest {
-    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+- (NSMutableURLRequest *)configuredRequest
+{
+    NSMutableURLRequest * request = [[[NSMutableURLRequest alloc] init] autorelease];
     [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
     [request setTimeoutInterval:_timeout];
     [request setHTTPShouldHandleCookies:YES];
     [self setDefaultHeadersForRequest:request];
     [self setAuthHeadersForRequest:request];
     
-    NSURL *composedURL = [self composedURL];
-    NSDictionary *params = [[self options] valueForKey:kHRClassAttributesParamsKey];
+    NSURL * composedURL = [self composedURL];
+    NSDictionary * params = [[self options] valueForKey:kHRClassAttributesParamsKey];
     id body = [[self options] valueForKey:kHRClassAttributesBodyKey];
-    NSString *queryString = [[self class] buildQueryStringFromParams:params];
     
-    if(_requestMethod == HRRequestMethodGet || _requestMethod == HRRequestMethodDelete) {
-        NSString *urlString = [[composedURL absoluteString] stringByAppendingString:queryString];
-        NSURL *url = [NSURL URLWithString:urlString];
-        [request setURL:url];
-        
-        if(_requestMethod == HRRequestMethodGet) {
-            [request setHTTPMethod:@"GET"];
-        } else {
-            [request setHTTPMethod:@"DELETE"];
+    NSString * queryString = @"";
+    if ([[self class] buildQueryStringFromParams:params] != nil)
+    { queryString = [[self class] buildQueryStringFromParams:params]; }
+    
+    if ([[self options] valueForKey:kHRClassAttributesUsingBodyAndUrlKey] != nil && [[[self options] valueForKey:kHRClassAttributesUsingBodyAndUrlKey] boolValue] == YES)
+    {
+        if (_requestMethod == HRRequestMethodGet ||
+            _requestMethod == HRRequestMethodDelete ||
+            _requestMethod == HRRequestMethodPost ||
+            _requestMethod == HRRequestMethodPut)
+        {
+            NSString * urlString = [[composedURL absoluteString] stringByAppendingString:queryString];
+            NSURL * url = [NSURL URLWithString:urlString];
+            [request setURL:url];
+            
+            NSData * bodyData = nil;
+            if ([body isKindOfClass:[NSDictionary class]])
+            { bodyData = [[body toQueryString] dataUsingEncoding:NSUTF8StringEncoding]; }
+            else if ([body isKindOfClass:[NSString class]])
+            { bodyData = [body dataUsingEncoding:NSUTF8StringEncoding]; }
+            else if ([body isKindOfClass:[NSData class]])
+            { bodyData = body; }
+            else if (body != nil)
+            {
+                [NSException exceptionWithName:@"InvalidBodyData"
+                                        reason:@"The body must be an NSDictionary, NSString, or NSData"
+                                      userInfo:nil];
+            }
+            
+            if (bodyData != nil)
+            { [request setHTTPBody:bodyData]; }
+            
+            if (_requestMethod == HRRequestMethodGet)
+            { [request setHTTPMethod:@"GET"]; }
+            else if (_requestMethod == HRRequestMethodDelete)
+            { [request setHTTPMethod:@"DELETE"]; }
+            else if (_requestMethod == HRRequestMethodPost)
+            { [request setHTTPMethod:@"POST"]; }
+            else if (_requestMethod == HRRequestMethodPut)
+            { [request setHTTPMethod:@"PUT"]; }
         }
+    }
+    // Default Behaviour :-)
+    else
+    {
+        if (_requestMethod == HRRequestMethodGet ||
+            _requestMethod == HRRequestMethodDelete)
+        {
+            NSString * urlString = [[composedURL absoluteString] stringByAppendingString:queryString];
+            NSURL * url = [NSURL URLWithString:urlString];
+            [request setURL:url];
             
-    } else if(_requestMethod == HRRequestMethodPost || _requestMethod == HRRequestMethodPut) {
-        
-        NSData *bodyData = nil;   
-        if([body isKindOfClass:[NSDictionary class]]) {
-            bodyData = [[body toQueryString] dataUsingEncoding:NSUTF8StringEncoding];
-        } else if([body isKindOfClass:[NSString class]]) {
-            bodyData = [body dataUsingEncoding:NSUTF8StringEncoding];
-        } else if([body isKindOfClass:[NSData class]]) {
-            bodyData = body;
-        } else {
-            [NSException exceptionWithName:@"InvalidBodyData"
-                                    reason:@"The body must be an NSDictionary, NSString, or NSData"
-                                  userInfo:nil];
+            if (_requestMethod == HRRequestMethodGet)
+            { [request setHTTPMethod:@"GET"]; }
+            else
+            { [request setHTTPMethod:@"DELETE"]; }
         }
+        else if (_requestMethod == HRRequestMethodPost ||
+                 _requestMethod == HRRequestMethodPut)
+        {
+            NSData * bodyData = nil;
             
-        [request setHTTPBody:bodyData];
-        [request setURL:composedURL];
-        
-        if(_requestMethod == HRRequestMethodPost)
-            [request setHTTPMethod:@"POST"];
-        else
-            [request setHTTPMethod:@"PUT"];
+            if ([body isKindOfClass:[NSDictionary class]])
+            { bodyData = [[body toQueryString] dataUsingEncoding:NSUTF8StringEncoding]; }
+            else if([body isKindOfClass:[NSString class]])
+            { bodyData = [body dataUsingEncoding:NSUTF8StringEncoding]; }
+            else if([body isKindOfClass:[NSData class]])
+            { bodyData = body; }
+            else
+            {
+                [NSException exceptionWithName:@"InvalidBodyData"
+                                        reason:@"The body must be an NSDictionary, NSString, or NSData"
+                                      userInfo:nil];
+            }
             
+            [request setHTTPBody:bodyData];
+            [request setURL:composedURL];
+            
+            if (_requestMethod == HRRequestMethodPost)
+            { [request setHTTPMethod:@"POST"]; }
+            else
+            { [request setHTTPMethod:@"PUT"]; }
+        }
     }
     
     return request;

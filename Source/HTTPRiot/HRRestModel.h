@@ -163,6 +163,18 @@
  *     object and sent.  
  * @{
  */
+
+/**
+ * The parameter to enable body- and url-queries for every request
+ */
++ (BOOL)useBodyAndUrl;
+
+/**
+ * Set the parameter to enable body- and url-queries for every request.
+ *
+ * @param url The base uri used in all request
+ */
++ (void)setUseBodyAndUrl:(BOOL)_useBodyAndUrl;
  
 /**
  * Send a GET request

@@ -506,10 +506,10 @@
 				D09E4B350F33EB0E00C9E26E /* HRRequestOperation.h */,
 				D09E4B360F33EB0E00C9E26E /* HRRequestOperation.m */,
 				D02988630F3F7F1200EC8C01 /* HTTPRiot_Prefix.pch */,
-				D02988FE0F3FB63F00EC8C01 /* HRGlobal.h */,
 				D038BD850FF28B960041F570 /* HRResponseDelegate.h */,
 				D03982E50FFD6385005FECE7 /* HROperationQueue.h */,
 				D03982E60FFD6385005FECE7 /* HROperationQueue.m */,
+				D02988FE0F3FB63F00EC8C01 /* HRGlobal.h */,
 				D09C54E910321DE200097202 /* HRGlobal.m */,
 			);
 			path = HTTPRiot;
