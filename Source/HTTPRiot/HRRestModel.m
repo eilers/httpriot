@@ -92,6 +92,14 @@ static NSMutableDictionary *attributes;
     [[self classAttributes] setValue:[NSNumber numberWithInt:format] forKey:kHRClassAttributesFormatKey];
 }
 
++ (BOOL)useBodyAndUrl {
+    return [[[self classAttributes] objectForKey:kHRClassAttributesUsingBodyAndUrlKey] boolValue];
+}
+
++ (void)setUseBodyAndUrl:(BOOL)_useBodyAndUrl {
+    [[self classAttributes] setValue:[NSNumber numberWithBool:_useBodyAndUrl] forKey:kHRClassAttributesUsingBodyAndUrlKey];
+}
+
 + (NSDictionary *)defaultParams {
     return [[self classAttributes] objectForKey:kHRClassAttributesDefaultParamsKey];
 }

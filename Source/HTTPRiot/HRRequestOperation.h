@@ -9,14 +9,14 @@
 #import "HRGlobal.h"
 #import "HRResponseDelegate.h"
 
-#import "ChallengeHandler.h"
+#import "HRChallengeHandler.h"
 
 /**
  * The object which all requests are routed through.  You shouldn't need to use 
  * this class directly, but instead use HRRestModel which wraps the method 
  * of this class neatly.
  */
-@interface HRRequestOperation : NSOperation <ChallengeHandlerDelegate> {
+@interface HRRequestOperation : NSOperation <HRChallengeHandlerDelegate> {
 @private
     /// HRResponse Delegate
     NSObject        <HRResponseDelegate>*_delegate;
@@ -55,7 +55,7 @@
     BOOL _isCancelled;
     
     /// The current challenge handler
-    ChallengeHandler *_currentChallenge;
+    HRChallengeHandler *_currentChallenge;
     
     /// Parent view controller used as root for modal subviews
     UIViewController *_parentViewController;
