@@ -1,38 +1,59 @@
-#import "DDXMLDocument.h"
-#import "NSStringAdditions.h"
 #import "DDXMLPrivate.h"
+#import "NSString+DDXML.h"
 
+#if ! __has_feature(objc_arc)
+#warning This file must be compiled with ARC. Use -fobjc-arc flag (or convert project to ARC).
+#endif
+
+/**
+ * Welcome to KissXML.
+ * 
+ * The project page has documentation if you have questions.
+ * https://github.com/robbiehanson/KissXML
+ * 
+ * If you're new to the project you may wish to read the "Getting Started" wiki.
+ * https://github.com/robbiehanson/KissXML/wiki/GettingStarted
+ * 
+ * KissXML provides a drop-in replacement for Apple's NSXML class cluster.
+ * The goal is to get the exact same behavior as the NSXML classes.
+ * 
+ * For API Reference, see Apple's excellent documentation,
+ * either via Xcode's Mac OS X documentation, or via the web:
+ * 
+ * https://github.com/robbiehanson/KissXML/wiki/Reference
+**/
 
 @implementation DDXMLDocument
 
 /**
  * Returns a DDXML wrapper object for the given primitive node.
  * The given node MUST be non-NULL and of the proper type.
- * 
- * If the wrapper object already exists, it is retained/autoreleased and returned.
- * Otherwise a new wrapper object is alloc/init/autoreleased and returned.
 **/
-+ (id)nodeWithPrimitive:(xmlKindPtr)kindPtr
++ (id)nodeWithDocPrimitive:(xmlDocPtr)doc owner:(DDXMLNode *)owner
 {
-	// If a wrapper object already exists, the _private variable is pointing to it.
-	
-	xmlDocPtr doc = (xmlDocPtr)kindPtr;
-	if(doc->_private == NULL)
-		return [[[DDXMLDocument alloc] initWithCheckedPrimitive:kindPtr] autorelease];
-	else
-		return [[((DDXMLDocument *)(doc->_private)) retain] autorelease];
+	return [[DDXMLDocument alloc] initWithDocPrimitive:doc owner:owner];
 }
 
-/**
- * Returns a DDXML wrapper object for the given primitive node.
- * The given node MUST be non-NULL and of the proper type.
- * 
- * The given node is checked, meaning a wrapper object for it does not already exist.
-**/
-- (id)initWithCheckedPrimitive:(xmlKindPtr)kindPtr
+- (id)initWithDocPrimitive:(xmlDocPtr)doc owner:(DDXMLNode *)inOwner
 {
-	self = [super initWithCheckedPrimitive:kindPtr];
+	self = [super initWithPrimitive:(xmlKindPtr)doc owner:inOwner];
 	return self;
+}
+
++ (id)nodeWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)owner
+{
+	// Promote initializers which use proper parameter types to enable compiler to catch more mistakes
+	NSAssert(NO, @"Use nodeWithDocPrimitive:owner:");
+	
+	return nil;
+}
+
+- (id)initWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)inOwner
+{
+	// Promote initializers which use proper parameter types to enable compiler to catch more mistakes.
+	NSAssert(NO, @"Use initWithDocPrimitive:owner:");
+	
+	return nil;
 }
 
 /**
@@ -43,7 +64,9 @@
 **/
 - (id)initWithXMLString:(NSString *)string options:(NSUInteger)mask error:(NSError **)error
 {
-	return [self initWithData:[string dataUsingEncoding:NSUTF8StringEncoding] options:mask error:error];
+	return [self initWithData:[string dataUsingEncoding:NSUTF8StringEncoding]
+	                  options:mask
+	                    error:error];
 }
 
 /**
@@ -54,11 +77,10 @@
 **/
 - (id)initWithData:(NSData *)data options:(NSUInteger)mask error:(NSError **)error
 {
-	if(data == nil || [data length] == 0)
+	if (data == nil || [data length] == 0)
 	{
-		if(error) *error = [NSError errorWithDomain:@"DDXMLErrorDomain" code:0 userInfo:nil];
+		if (error) *error = [NSError errorWithDomain:@"DDXMLErrorDomain" code:0 userInfo:nil];
 		
-		[self release];
 		return nil;
 	}
 	
@@ -70,15 +92,14 @@
 	xmlKeepBlanksDefault(0);
 	
 	xmlDocPtr doc = xmlParseMemory([data bytes], [data length]);
-	if(doc == NULL)
+	if (doc == NULL)
 	{
-		if(error) *error = [NSError errorWithDomain:@"DDXMLErrorDomain" code:1 userInfo:nil];
+		if (error) *error = [NSError errorWithDomain:@"DDXMLErrorDomain" code:1 userInfo:nil];
 		
-		[self release];
 		return nil;
 	}
 	
-	return [self initWithCheckedPrimitive:(xmlKindPtr)doc];
+	return [self initWithDocPrimitive:doc owner:nil];
 }
 
 /**
@@ -86,25 +107,33 @@
 **/
 - (DDXMLElement *)rootElement
 {
+#if DDXML_DEBUG_MEMORY_ISSUES
+	DDXMLNotZombieAssert();
+#endif
+	
 	xmlDocPtr doc = (xmlDocPtr)genericPtr;
 	
 	// doc->children is a list containing possibly comments, DTDs, etc...
 	
 	xmlNodePtr rootNode = xmlDocGetRootElement(doc);
 	
-	if(rootNode != NULL)
-		return [DDXMLElement nodeWithPrimitive:(xmlKindPtr)rootNode];
+	if (rootNode != NULL)
+		return [DDXMLElement nodeWithElementPrimitive:rootNode owner:self];
 	else
 		return nil;
 }
 
 - (NSData *)XMLData
 {
+	// Zombie test occurs in XMLString
+	
 	return [[self XMLString] dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 - (NSData *)XMLDataWithOptions:(NSUInteger)options
 {
+	// Zombie test occurs in XMLString
+	
 	return [[self XMLStringWithOptions:options] dataUsingEncoding:NSUTF8StringEncoding];
 }
 
