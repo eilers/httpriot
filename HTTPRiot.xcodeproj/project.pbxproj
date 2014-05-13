@@ -116,7 +116,6 @@
 		D0A6E4150FFD39F100012097 /* HRBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = D0A6E4110FFD39F100012097 /* HRBase64.h */; };
 		D0A6E4160FFD39F100012097 /* HRBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A6E4120FFD39F100012097 /* HRBase64.m */; };
 		D0C7131E0FF2A3310083905B /* ISAPeopleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C7131D0FF2A3310083905B /* ISAPeopleTableViewController.m */; };
-		D0D9669B0F65C7C300F1347A /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D9669A0F65C7C300F1347A /* libxml2.2.dylib */; };
 		D0DBB0361099FD8700FC0836 /* libGHUnitIPhone3_0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D0DBB0331099FD8700FC0836 /* libGHUnitIPhone3_0.a */; };
 		F8014E7A11ABC91100F9DD53 /* HRChallengeHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = F8014E7811ABC91100F9DD53 /* HRChallengeHandler.h */; };
 		F8014E7B11ABC91100F9DD53 /* HRChallengeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F8014E7911ABC91100F9DD53 /* HRChallengeHandler.m */; };
@@ -126,16 +125,10 @@
 		F8014E7F11ABC91100F9DD53 /* HRChallengeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F8014E7911ABC91100F9DD53 /* HRChallengeHandler.m */; };
 		F8014E8011ABC91100F9DD53 /* HRChallengeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F8014E7911ABC91100F9DD53 /* HRChallengeHandler.m */; };
 		F8014E8111ABC91100F9DD53 /* HRChallengeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F8014E7911ABC91100F9DD53 /* HRChallengeHandler.m */; };
-		F8DD835D191EBD1C00DFC01E /* DDXMLElementAdditions.h in Sources */ = {isa = PBXBuildFile; fileRef = F8DD8356191EBD1C00DFC01E /* DDXMLElementAdditions.h */; };
-		F8DD835E191EBD1C00DFC01E /* DDXMLElementAdditions.h in Sources */ = {isa = PBXBuildFile; fileRef = F8DD8356191EBD1C00DFC01E /* DDXMLElementAdditions.h */; };
 		F8DD835F191EBD1C00DFC01E /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DD8357191EBD1C00DFC01E /* DDXMLElementAdditions.m */; };
 		F8DD8360191EBD1C00DFC01E /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DD8357191EBD1C00DFC01E /* DDXMLElementAdditions.m */; };
-		F8DD8361191EBD1C00DFC01E /* NSString+DDXML.h in Sources */ = {isa = PBXBuildFile; fileRef = F8DD8359191EBD1C00DFC01E /* NSString+DDXML.h */; };
-		F8DD8362191EBD1C00DFC01E /* NSString+DDXML.h in Sources */ = {isa = PBXBuildFile; fileRef = F8DD8359191EBD1C00DFC01E /* NSString+DDXML.h */; };
 		F8DD8363191EBD1C00DFC01E /* NSString+DDXML.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DD835A191EBD1C00DFC01E /* NSString+DDXML.m */; };
 		F8DD8364191EBD1C00DFC01E /* NSString+DDXML.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DD835A191EBD1C00DFC01E /* NSString+DDXML.m */; };
-		F8DD8365191EBD1C00DFC01E /* DDXMLPrivate.h in Sources */ = {isa = PBXBuildFile; fileRef = F8DD835C191EBD1C00DFC01E /* DDXMLPrivate.h */; };
-		F8DD8366191EBD1C00DFC01E /* DDXMLPrivate.h in Sources */ = {isa = PBXBuildFile; fileRef = F8DD835C191EBD1C00DFC01E /* DDXMLPrivate.h */; };
 		F8DE085A11A6C3F5001DA4FB /* HRResponseDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = D038BD850FF28B960041F570 /* HRResponseDelegate.h */; settings = {ATTRIBUTES = (); }; };
 		F8DE085B11A6C3F5001DA4FB /* HTTPRiot.h in Headers */ = {isa = PBXBuildFile; fileRef = D03DB6650F3163BB00F18796 /* HTTPRiot.h */; settings = {ATTRIBUTES = (); }; };
 		F8DE085C11A6C3F5001DA4FB /* HTTPRiot_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D02988630F3F7F1200EC8C01 /* HTTPRiot_Prefix.pch */; settings = {ATTRIBUTES = (); }; };
@@ -172,7 +165,6 @@
 		F8DE088B11A6C3F5001DA4FB /* HRBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A6E4120FFD39F100012097 /* HRBase64.m */; };
 		F8DE088C11A6C3F5001DA4FB /* HROperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = D03982E60FFD6385005FECE7 /* HROperationQueue.m */; };
 		F8DE088D11A6C3F5001DA4FB /* HRGlobal.m in Sources */ = {isa = PBXBuildFile; fileRef = D09C54E910321DE200097202 /* HRGlobal.m */; };
-		F8DE089211A6C3F5001DA4FB /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D9669A0F65C7C300F1347A /* libxml2.2.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -314,7 +306,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0D9669B0F65C7C300F1347A /* libxml2.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,7 +332,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8DE089211A6C3F5001DA4FB /* libxml2.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -938,7 +928,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D07744860F4885DA00190554 /* HRFormatJSON.m in Sources */,
-				F8DD8365191EBD1C00DFC01E /* DDXMLPrivate.h in Sources */,
 				D07744870F4885DA00190554 /* HRFormatXML.m in Sources */,
 				D07744880F4885DA00190554 /* HRRequestOperation.m in Sources */,
 				D07744850F4885AE00190554 /* HRRestModel.m in Sources */,
@@ -953,11 +942,9 @@
 				D04EF1310F65C52D003C6240 /* DDXMLElement.m in Sources */,
 				F8DD835F191EBD1C00DFC01E /* DDXMLElementAdditions.m in Sources */,
 				D04EF1350F65C52D003C6240 /* DDXMLNode.m in Sources */,
-				F8DD8361191EBD1C00DFC01E /* NSString+DDXML.h in Sources */,
 				D00048250FF35B0E00CCAF1B /* NSObject+InvocationUtils.m in Sources */,
 				D0A6E4160FFD39F100012097 /* HRBase64.m in Sources */,
 				D03982E80FFD6385005FECE7 /* HROperationQueue.m in Sources */,
-				F8DD835D191EBD1C00DFC01E /* DDXMLElementAdditions.h in Sources */,
 				D09C54EB10321DE200097202 /* HRGlobal.m in Sources */,
 				D09A5D8F106E9C3E00167242 /* SBJsonBase.m in Sources */,
 				D09A5D91106E9C3E00167242 /* SBJsonParser.m in Sources */,
@@ -1004,8 +991,6 @@
 				F8DE087C11A6C3F5001DA4FB /* HRRequestOperation.m in Sources */,
 				F8DE087D11A6C3F5001DA4FB /* HRRestModel.m in Sources */,
 				F8DD8360191EBD1C00DFC01E /* DDXMLElementAdditions.m in Sources */,
-				F8DD8366191EBD1C00DFC01E /* DDXMLPrivate.h in Sources */,
-				F8DD8362191EBD1C00DFC01E /* NSString+DDXML.h in Sources */,
 				F8DE087E11A6C3F5001DA4FB /* NSDictionary+ParamUtils.m in Sources */,
 				F8DE088111A6C3F5001DA4FB /* NSString+EscapingUtils.m in Sources */,
 				F8DE088311A6C3F5001DA4FB /* AIXMLDocumentSerialize.m in Sources */,
@@ -1018,7 +1003,6 @@
 				F8DE088C11A6C3F5001DA4FB /* HROperationQueue.m in Sources */,
 				F8DE088D11A6C3F5001DA4FB /* HRGlobal.m in Sources */,
 				F8DD8364191EBD1C00DFC01E /* NSString+DDXML.m in Sources */,
-				F8DD835E191EBD1C00DFC01E /* DDXMLElementAdditions.h in Sources */,
 				F8014E7B11ABC91100F9DD53 /* HRChallengeHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1137,6 +1121,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 0.6.10;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1157,6 +1142,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 0.6.10;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1306,6 +1292,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 0.6.10;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1328,6 +1315,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 0.6.10;
 				DYLIB_COMPATIBILITY_VERSION = 0.1.0;

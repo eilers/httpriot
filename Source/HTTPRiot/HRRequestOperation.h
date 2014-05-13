@@ -19,7 +19,7 @@
 @interface HRRequestOperation : NSOperation <HRChallengeHandlerDelegate> {
 @private
     /// HRResponse Delegate
-    NSObject        <HRResponseDelegate>*_delegate;
+    NSObject        <HRResponseDelegate>*__weak _delegate;
     
     /// Connection object
     NSURLConnection *_connection;
@@ -66,7 +66,7 @@
  * The HRResponseDelegate responsible for handling the success and failure of 
  * a request.
  */
-@property (nonatomic, readonly, assign) NSObject <HRResponseDelegate>*delegate;
+@property (nonatomic, readonly, weak) NSObject <HRResponseDelegate>*delegate;
  
 /// The lenght of time in seconds before the request times out.
 /**
@@ -92,19 +92,19 @@
 /**
  This needs documented
  */
-@property (nonatomic, retain) NSDictionary *options;
+@property (nonatomic, strong) NSDictionary *options;
 
 /// The formatter used to decode the response body.
 /**
  Currently, only JSON is supported.
  */
-@property (nonatomic, readonly, retain) id formatter;
+@property (nonatomic, readonly, strong) id formatter;
 
 /// This parent view controller
 /**
  This view conttroller is used as root for modal subviews.
  */
-@property (nonatomic, retain) UIViewController *parentViewController;
+@property (nonatomic, strong) UIViewController *parentViewController;
 
 /**
  * Returns an HRRequestOperation

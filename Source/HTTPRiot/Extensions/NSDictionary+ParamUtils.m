@@ -14,7 +14,7 @@
 
 
 - (NSString *)toQueryString {
-    NSMutableArray *pairs = [[[NSMutableArray alloc] init] autorelease]; 
+    NSMutableArray *pairs = [[NSMutableArray alloc] init]; 
     for (id key in [self allKeys]) { 
         id value = [self objectForKey:key]; 
         if ([value isKindOfClass:[NSArray class]]) { 

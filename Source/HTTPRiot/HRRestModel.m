@@ -81,7 +81,7 @@ static NSMutableDictionary *attributes;
 
 + (void)setParentViewController:(UIViewController *)parentViewController
 {
-    [self setAttributeValue:parentViewController forKey:kHRClassParentViewControllerKey];
+ //   [self setAttributeValue:parentViewController forKey:kHRClassParentViewControllerKey];
 }
 
 + (HRDataFormat)format {
@@ -154,7 +154,6 @@ static NSMutableDictionary *attributes;
     if ( parentViewController )
     { [opts setObject:parentViewController forKey:kHRClassParentViewControllerKey]; }
     
-    [newOptions release];
     return opts;
 }
 @end

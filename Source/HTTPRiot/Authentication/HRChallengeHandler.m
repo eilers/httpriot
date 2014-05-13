@@ -132,7 +132,7 @@ static NSMutableDictionary * sAuthenticationMethodToHandlerClassArray;
             assert([handlerClasses isKindOfClass:[NSMutableArray class]]);
             
             for (Class candidateClass in handlerClasses) {
-                result = [[[candidateClass alloc] initWithChallenge:challenge parentViewController:parentViewController] autorelease];
+                result = [[candidateClass alloc] initWithChallenge:challenge parentViewController:parentViewController];
                 if (result != nil) {
                     break;
                 }
@@ -210,8 +210,8 @@ static NSMutableDictionary * sAuthenticationMethodToHandlerClassArray;
     assert(parentViewController != nil);
     self = [super init];
     if (self != nil) {
-        self->_challenge            = [challenge retain];
-        self->_parentViewController = [parentViewController retain];
+        self->_challenge            = challenge;
+        self->_parentViewController = parentViewController;
     }
     return self;
 }
@@ -220,10 +220,6 @@ static NSMutableDictionary * sAuthenticationMethodToHandlerClassArray;
 {
     assert( ! self->_running );          // should not still be displaying UI
     assert([NSThread isMainThread]);
-    [self->_challenge release];
-    [self->_parentViewController release];
-    [self->_credential release];
-    [super dealloc];
 }
 
 @synthesize challenge            = _challenge;
@@ -276,7 +272,7 @@ static NSMutableDictionary * sAuthenticationMethodToHandlerClassArray;
     if (self.running) {
         [self willFinish];
         assert(self->_credential == nil);
-        self->_credential = [credential retain];
+        self->_credential = credential;
         self.running = NO;
         [self didFinish];
     }

@@ -71,7 +71,7 @@
     NSURLAuthenticationChallenge *  _challenge;
     UIViewController *              _parentViewController;
     NSURLCredential *               _credential;
-    id<HRChallengeHandlerDelegate>    _delegate;
+    id<HRChallengeHandlerDelegate>    __weak _delegate;
     BOOL                            _running;
 }
 
@@ -89,18 +89,18 @@
     // is resolved with this value, we call -continueWithoutCredentialForAuthenticationChallenge: 
     // rather than -useCredential:forAuthenticationChallenge:.
 
-@property (nonatomic, retain, readonly)  NSURLAuthenticationChallenge * challenge;
-@property (nonatomic, retain, readonly)  UIViewController *             parentViewController;
+@property (nonatomic, strong, readonly)  NSURLAuthenticationChallenge * challenge;
+@property (nonatomic, strong, readonly)  UIViewController *             parentViewController;
     // These are the values supplied during construction.
 
-@property (nonatomic, retain, readonly)  NSURLCredential *              credential;
+@property (nonatomic, strong, readonly)  NSURLCredential *              credential;
     // This represents the credential being used to resolve the challenge.  If the 
     // challenge UI is still running, this will be nil.  Once the challenge UI 
     // is done (that is, the challenge handler has called the -challengeHandlerDidFinish: 
     // delegate method, or you've called -stop yourself), this will be nil, or 
     // +noCredential, or an actual credential. 
     
-@property (nonatomic, assign, readwrite) id<HRChallengeHandlerDelegate>   delegate;
+@property (nonatomic, weak, readwrite) id<HRChallengeHandlerDelegate>   delegate;
 
 @property (nonatomic, assign, readonly, getter=isRunning)  BOOL         running;
     // This is YES if the challenge UI is currently being displayed.
