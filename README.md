@@ -9,6 +9,9 @@ It offers a lot of flexibility with the data returned, but the tradeoff is that 
 the data returned because if you initiate two requests from one model both will be routed through the same 
 delegate methods that handle responses/errors/etc.
 
+## This verson supports communication via SSL
+In order to work with SSL you need to add Challenge Handlers. An example is provided by [IMAuthentication](https://github.com/eilers/IMAuthentication)
+
 ## Documentation and Samples:
 
 * [Online Documentation](http://labratrevenge.com/httpriot)

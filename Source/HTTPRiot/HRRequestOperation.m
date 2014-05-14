@@ -14,6 +14,7 @@
 #import "NSDictionary+ParamUtils.h"
 #import "HRBase64.h"
 #import "HROperationQueue.h"
+#import "HRRestWeakReferenceContainer.h"
 
 @interface HRRequestOperation (PrivateMethods)
 - (NSMutableURLRequest *)http;
@@ -29,20 +30,14 @@
 @end
 
 @implementation HRRequestOperation
-@synthesize timeout         = _timeout;
-@synthesize requestMethod   = _requestMethod;
-@synthesize path            = _path;
-@synthesize options         = _options;
-@synthesize formatter       = _formatter;
-@synthesize delegate        = _delegate;
+@synthesize timeout              = _timeout;
+@synthesize requestMethod        = _requestMethod;
+@synthesize path                 = _path;
+@synthesize options              = _options;
+@synthesize formatter            = _formatter;
+@synthesize delegate             = _delegate;
+@synthesize parentViewController = _parentViewController;
 
-- (void)dealloc {
-    [_path release];
-    [_options release];
-    [_formatter release];
-    [_object release];
-    [super dealloc];
-}
 
 - (id)initWithMethod:(HRRequestMethod)method path:(NSString*)urlPath options:(NSDictionary*)opts object:(id)obj {
                  
@@ -52,11 +47,15 @@
         _isCancelled    = NO;
         _requestMethod  = method;
         _path           = [urlPath copy];
-        _options        = [opts retain];
-        _object         = [obj retain];
+        _options        = opts;
+        _object         = obj;
         _timeout        = 30.0;
         _delegate       = [[opts valueForKey:kHRClassAttributesDelegateKey] nonretainedObjectValue];
-        _formatter      = [[self formatterFromFormat] retain];
+        _formatter      = [self formatterFromFormat];
+        
+        HRRestWeakReferenceContainer* weakContainer = (HRRestWeakReferenceContainer*) [opts objectForKey:kHRClassParentViewControllerKey];
+        NSAssert(weakContainer.weakReference != nil ? [weakContainer.weakReference isKindOfClass:[UIViewController class]] : YES, @"Container contains incorrect class");
+        self.parentViewController = (UIViewController*)weakContainer.weakReference;
     }
 
     return self;
@@ -88,10 +87,8 @@
 
 - (void)finish {
     HRLOG(@"Operation Finished. Releasing...");
-    [_connection release];
     _connection = nil;
     
-    [_responseData release];
     _responseData = nil;
 
     [self willChangeValueForKey:@"isExecuting"];
@@ -180,7 +177,6 @@
                 [_delegate performSelectorOnMainThread:@selector(restConnection:didReceiveParseError:responseBody:object:) withObjects:connection, parseError, rawString, _object, nil];                
             }
             
-            [rawString release];
             [self finish];
             
             return;
@@ -193,6 +189,62 @@
         
     [self finish];
 }
+
+// A delegate method called by the NSURLConnection when something happens with the 
+// connection security-wise.  We defer all of the logic for how to handle this to 
+// the ChallengeHandler module (and it's very custom subclasses).
+- (BOOL)connection:(NSURLConnection *)conn canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
+{
+#pragma unused(conn)
+    BOOL    result;
+    
+    assert( conn == _connection );
+    assert( protectionSpace != nil );
+    
+    result = [HRChallengeHandler supportsProtectionSpace:protectionSpace];
+    HRLOG(@"canAuthenticateAgainstProtectionSpace %@ -> %d", [protectionSpace authenticationMethod], result);
+    return result;
+}
+
+// A delegate method called by the NSURLConnection when you accept a specific 
+// authentication challenge by returning YES from -connection:canAuthenticateAgainstProtectionSpace:. 
+// Again, most of the logic has been shuffled off to the ChallengeHandler module; the only 
+// policy decision we make here is that, if the challenge handle doesn't get it right in 5 tries, 
+// we bail out.
+- (void)connection:(NSURLConnection *)conn didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+#pragma unused(conn)
+    assert( conn == _connection );
+    assert( challenge != nil );
+    
+    HRLOG(@"didReceiveAuthenticationChallenge %@ %zd", [[challenge protectionSpace] authenticationMethod], (ssize_t) [challenge previousFailureCount]);
+    
+    assert( _currentChallenge == nil );
+    assert( self.parentViewController != nil );
+    
+    // If not in debug mode: Provide warning if no view controller is available
+    if ( !self.parentViewController )
+    {
+    	NSLog( @"WARNING: No parent view controller is set. Now cancel authentication requests which may need a view" );
+        [[challenge sender] cancelAuthenticationChallenge:challenge];
+        return;
+    }
+    
+    if ( [challenge previousFailureCount] < 5 
+        && self.parentViewController )
+    {
+        _currentChallenge = [HRChallengeHandler handlerForChallenge:challenge parentViewController:self.parentViewController];
+        if (_currentChallenge == nil) {
+            [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
+        } else {
+            _currentChallenge.delegate = self;
+            [_currentChallenge start];
+        }
+    } else {
+        [[challenge sender] cancelAuthenticationChallenge:challenge];
+    }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Configuration
@@ -227,53 +279,102 @@
     }
 }
 
-- (NSMutableURLRequest *)configuredRequest {
-    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+- (NSMutableURLRequest *)configuredRequest
+{
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc] init];
     [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
     [request setTimeoutInterval:_timeout];
     [request setHTTPShouldHandleCookies:YES];
     [self setDefaultHeadersForRequest:request];
     [self setAuthHeadersForRequest:request];
     
-    NSURL *composedURL = [self composedURL];
-    NSDictionary *params = [[self options] valueForKey:kHRClassAttributesParamsKey];
+    NSURL * composedURL = [self composedURL];
+    NSDictionary * params = [[self options] valueForKey:kHRClassAttributesParamsKey];
     id body = [[self options] valueForKey:kHRClassAttributesBodyKey];
-    NSString *queryString = [[self class] buildQueryStringFromParams:params];
     
-    if(_requestMethod == HRRequestMethodGet || _requestMethod == HRRequestMethodDelete) {
-        NSString *urlString = [[composedURL absoluteString] stringByAppendingString:queryString];
-        NSURL *url = [NSURL URLWithString:urlString];
-        [request setURL:url];
-        
-        if(_requestMethod == HRRequestMethodGet) {
-            [request setHTTPMethod:@"GET"];
-        } else {
-            [request setHTTPMethod:@"DELETE"];
+    NSString * queryString = @"";
+    if ([[self class] buildQueryStringFromParams:params] != nil)
+    { queryString = [[self class] buildQueryStringFromParams:params]; }
+    
+    if ([[self options] valueForKey:kHRClassAttributesUsingBodyAndUrlKey] != nil && [[[self options] valueForKey:kHRClassAttributesUsingBodyAndUrlKey] boolValue] == YES)
+    {
+        if (_requestMethod == HRRequestMethodGet ||
+            _requestMethod == HRRequestMethodDelete ||
+            _requestMethod == HRRequestMethodPost ||
+            _requestMethod == HRRequestMethodPut)
+        {
+            NSString * urlString = [[composedURL absoluteString] stringByAppendingString:queryString];
+            NSURL * url = [NSURL URLWithString:urlString];
+            [request setURL:url];
+            
+            NSData * bodyData = nil;
+            if ([body isKindOfClass:[NSDictionary class]])
+            { bodyData = [[body toQueryString] dataUsingEncoding:NSUTF8StringEncoding]; }
+            else if ([body isKindOfClass:[NSString class]])
+            { bodyData = [body dataUsingEncoding:NSUTF8StringEncoding]; }
+            else if ([body isKindOfClass:[NSData class]])
+            { bodyData = body; }
+            else if (body != nil)
+            {
+                [NSException exceptionWithName:@"InvalidBodyData"
+                                        reason:@"The body must be an NSDictionary, NSString, or NSData"
+                                      userInfo:nil];
+            }
+            
+            if (bodyData != nil)
+            { [request setHTTPBody:bodyData]; }
+            
+            if (_requestMethod == HRRequestMethodGet)
+            { [request setHTTPMethod:@"GET"]; }
+            else if (_requestMethod == HRRequestMethodDelete)
+            { [request setHTTPMethod:@"DELETE"]; }
+            else if (_requestMethod == HRRequestMethodPost)
+            { [request setHTTPMethod:@"POST"]; }
+            else if (_requestMethod == HRRequestMethodPut)
+            { [request setHTTPMethod:@"PUT"]; }
         }
+    }
+    // Default Behaviour :-)
+    else
+    {
+        if (_requestMethod == HRRequestMethodGet ||
+            _requestMethod == HRRequestMethodDelete)
+        {
+            NSString * urlString = [[composedURL absoluteString] stringByAppendingString:queryString];
+            NSURL * url = [NSURL URLWithString:urlString];
+            [request setURL:url];
             
-    } else if(_requestMethod == HRRequestMethodPost || _requestMethod == HRRequestMethodPut) {
-        
-        NSData *bodyData = nil;   
-        if([body isKindOfClass:[NSDictionary class]]) {
-            bodyData = [[body toQueryString] dataUsingEncoding:NSUTF8StringEncoding];
-        } else if([body isKindOfClass:[NSString class]]) {
-            bodyData = [body dataUsingEncoding:NSUTF8StringEncoding];
-        } else if([body isKindOfClass:[NSData class]]) {
-            bodyData = body;
-        } else {
-            [NSException exceptionWithName:@"InvalidBodyData"
-                                    reason:@"The body must be an NSDictionary, NSString, or NSData"
-                                  userInfo:nil];
+            if (_requestMethod == HRRequestMethodGet)
+            { [request setHTTPMethod:@"GET"]; }
+            else
+            { [request setHTTPMethod:@"DELETE"]; }
         }
+        else if (_requestMethod == HRRequestMethodPost ||
+                 _requestMethod == HRRequestMethodPut)
+        {
+            NSData * bodyData = nil;
             
-        [request setHTTPBody:bodyData];
-        [request setURL:composedURL];
-        
-        if(_requestMethod == HRRequestMethodPost)
-            [request setHTTPMethod:@"POST"];
-        else
-            [request setHTTPMethod:@"PUT"];
+            if ([body isKindOfClass:[NSDictionary class]])
+            { bodyData = [[body toQueryString] dataUsingEncoding:NSUTF8StringEncoding]; }
+            else if([body isKindOfClass:[NSString class]])
+            { bodyData = [body dataUsingEncoding:NSUTF8StringEncoding]; }
+            else if([body isKindOfClass:[NSData class]])
+            { bodyData = body; }
+            else
+            {
+                [NSException exceptionWithName:@"InvalidBodyData"
+                                        reason:@"The body must be an NSDictionary, NSString, or NSData"
+                                      userInfo:nil];
+            }
             
+            [request setHTTPBody:bodyData];
+            [request setURL:composedURL];
+            
+            if (_requestMethod == HRRequestMethodPost)
+            { [request setHTTPMethod:@"POST"]; }
+            else
+            { [request setHTTPMethod:@"PUT"]; }
+        }
     }
     
     return request;
@@ -316,9 +417,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Class Methods
 + (HRRequestOperation *)requestWithMethod:(HRRequestMethod)method path:(NSString*)urlPath options:(NSDictionary*)requestOptions object:(id)obj {
-    id operation = [[self alloc] initWithMethod:method path:urlPath options:requestOptions object:obj];
+    HRRequestOperation* operation = [[self alloc] initWithMethod:method path:urlPath options:requestOptions object:obj];
     [[HROperationQueue sharedOperationQueue] addOperation:operation];
-    return [operation autorelease];
+    return operation;
 }
 
 + (id)handleResponse:(NSHTTPURLResponse *)response error:(NSError **)error {
@@ -334,11 +435,11 @@
         NSDictionary *headers = [response allHeaderFields];
         NSString *errorReason = [NSString stringWithFormat:@"%d Error: ", code];
         NSString *errorDescription = [NSHTTPURLResponse localizedStringForStatusCode:code];
-        NSDictionary *userInfo = [[[NSDictionary dictionaryWithObjectsAndKeys:
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                    errorReason, NSLocalizedFailureReasonErrorKey,
                                    errorDescription, NSLocalizedDescriptionKey, 
                                    headers, kHRClassAttributesHeadersKey, 
-                                   [[response URL] absoluteString], @"url", nil] retain] autorelease];
+                                   [[response URL] absoluteString], @"url", nil];
         *error = [NSError errorWithDomain:HTTPRiotErrorDomain code:code userInfo:userInfo];
     }
 
@@ -353,4 +454,34 @@
     
     return @"";
 }
+
+#pragma mark * Authentication challenge UI
+// Called by the authentication challenge handler once the challenge is 
+// resolved.  We twiddle our internal state and then call the -resolve method 
+// to apply the challenge results to the NSURLAuthenticationChallenge.
+- (void)challengeHandlerDidFinish:(HRChallengeHandler *)handler
+{
+#pragma unused(handler)
+    HRChallengeHandler *  challenge;
+    
+    assert(handler == _currentChallenge);
+    
+    // We want to nil out currentChallenge because we've really done with this 
+    // challenge now and, for example, if the next operation kicks up a new 
+    // challenge, we want to make sure that currentChallenge is ready to receive 
+    // it.
+    // 
+    // We want the challenge to hang around after we've nilled out currentChallenge, 
+    // so retain/autorelease it.
+    
+    challenge = _currentChallenge;
+    _currentChallenge = nil;
+    
+    // If the credential isn't present, this will trigger a -connection:didFailWithError: 
+    // callback.
+    
+    HRLOG(@"resolve %@ -> %@", [[challenge.challenge protectionSpace] authenticationMethod], challenge.credential);
+    [challenge resolve];
+}
+
 @end

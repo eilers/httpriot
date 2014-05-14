@@ -9,6 +9,7 @@
 #import "HRRestModel.h"
 #import "HRRequestOperation.h"
 #import "HRGlobal.h"
+#import "HRRestWeakReferenceContainer.h"
 
 @interface HRRestModel (PrivateMethods)
 + (void)setAttributeValue:(id)attr forKey:(NSString *)key;
@@ -79,12 +80,27 @@ static NSMutableDictionary *attributes;
     [self setAttributeValue:authDict forKey:kHRClassAttributesBasicAuthKey];
 }
 
++ (void)setParentViewController:(UIViewController *)parentViewController
+{
+    HRRestWeakReferenceContainer* referenceContainer = [[HRRestWeakReferenceContainer alloc] init];
+    referenceContainer.weakReference = parentViewController;
+    [self setAttributeValue:referenceContainer forKey:kHRClassParentViewControllerKey];
+}
+
 + (HRDataFormat)format {
     return [[[self classAttributes] objectForKey:kHRClassAttributesFormatKey] intValue];
 }
 
 + (void)setFormat:(HRDataFormat)format {
     [[self classAttributes] setValue:[NSNumber numberWithInt:format] forKey:kHRClassAttributesFormatKey];
+}
+
++ (BOOL)useBodyAndUrl {
+    return [[[self classAttributes] objectForKey:kHRClassAttributesUsingBodyAndUrlKey] boolValue];
+}
+
++ (void)setUseBodyAndUrl:(BOOL)_useBodyAndUrl {
+    [[self classAttributes] setValue:[NSNumber numberWithBool:_useBodyAndUrl] forKey:kHRClassAttributesUsingBodyAndUrlKey];
 }
 
 + (NSDictionary *)defaultParams {
@@ -136,7 +152,11 @@ static NSMutableDictionary *attributes;
     NSMutableDictionary *opts = [NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)[self classAttributes]];
     [opts addEntriesFromDictionary:(NSDictionary *)newOptions];
     [opts removeObjectForKey:kHRClassAttributesDefaultParamsKey];
-    [newOptions release];
+    
+    id parentViewController = [[self classAttributes] objectForKey:kHRClassParentViewControllerKey];
+    if ( parentViewController )
+    { [opts setObject:parentViewController forKey:kHRClassParentViewControllerKey]; }
+    
     return opts;
 }
 @end

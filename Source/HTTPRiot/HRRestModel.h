@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import "HRGlobal.h"
 
+@class UIViewController;
+
 /**
  * This class allows you to easily interact with RESTful resources.  Responses are automatically
  * converted to the proper Objective-C type.  You can use this class directly or subclass it.
@@ -117,6 +119,11 @@
 + (void)setBasicAuthWithUsername:(NSString *)username password:(NSString *)password;
 
 /**
+ * Parent view controller used as parent for modal authentification dialogs
+ */
++ (void)setParentViewController:(UIViewController *)parentViewController;
+
+/**
  * Default params sent with every request.
  */
 + (NSDictionary *)defaultParams;
@@ -156,6 +163,18 @@
  *     object and sent.  
  * @{
  */
+
+/**
+ * The parameter to enable body- and url-queries for every request
+ */
++ (BOOL)useBodyAndUrl;
+
+/**
+ * Set the parameter to enable body- and url-queries for every request.
+ *
+ * @param url The base uri used in all request
+ */
++ (void)setUseBodyAndUrl:(BOOL)_useBodyAndUrl;
  
 /**
  * Send a GET request

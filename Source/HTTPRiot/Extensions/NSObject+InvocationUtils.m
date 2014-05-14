@@ -26,18 +26,18 @@
     }
     
     [self performSelectorOnMainThread:selector withObjectArray:objects];
-    [objects release];
 }
 
 - (void)performSelectorOnMainThread:(SEL)selector withObjectArray:(NSArray *)objects {
     NSMethodSignature *signature = [self methodSignatureForSelector:selector];
     if(signature) {
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+        [invocation retainArguments];
         [invocation setTarget:self];
         [invocation setSelector:selector];
         
         for(size_t i = 0; i < objects.count; ++i) {
-            id obj = [objects objectAtIndex:i];
+            __unsafe_unretained id obj = [objects objectAtIndex:i];
             [invocation setArgument:&obj atIndex:(i + 2)];
         }
         

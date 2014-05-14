@@ -2,12 +2,12 @@
 
 @implementation NSString (EscapingUtils)
 - (NSString *)stringByPreparingForURL {
-	NSString *escapedString = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+	NSString *escapedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
 																				  (CFStringRef)self,
 																				  NULL,
 																				  (CFStringRef)@":/?=,!$&'()*+;[]@#",
-																				  CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding));
+																				  CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding)));
 	
-	return [escapedString autorelease];
+	return escapedString;
 }
 @end

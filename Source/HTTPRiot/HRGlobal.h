@@ -4,25 +4,29 @@
 #import <Foundation/Foundation.h>
 
 /// Key for delgate
-extern NSString *kHRClassAttributesDelegateKey;
+extern NSString * kHRClassAttributesDelegateKey;
 /// Key for base url
-extern NSString *kHRClassAttributesBaseURLKey;
+extern NSString * kHRClassAttributesBaseURLKey;
 /// Key for headers
-extern NSString *kHRClassAttributesHeadersKey;
+extern NSString * kHRClassAttributesHeadersKey;
 /// Key for basic auth
-extern NSString *kHRClassAttributesBasicAuthKey;
+extern NSString * kHRClassAttributesBasicAuthKey;
 /// Key for username
-extern NSString *kHRClassAttributesUsernameKey;
+extern NSString * kHRClassAttributesUsernameKey;
 /// Key for password
-extern NSString *kHRClassAttributesPasswordKey;
+extern NSString * kHRClassAttributesPasswordKey;
 /// Key for format
-extern NSString *kHRClassAttributesFormatKey;
+extern NSString * kHRClassAttributesFormatKey;
 /// Key for default params
-extern NSString *kHRClassAttributesDefaultParamsKey;
+extern NSString * kHRClassAttributesDefaultParamsKey;
 /// Key for params
-extern NSString *kHRClassAttributesParamsKey;
+extern NSString * kHRClassAttributesParamsKey;
 /// Key for body
-extern NSString *kHRClassAttributesBodyKey;
+extern NSString * kHRClassAttributesBodyKey;
+/// Key for parent view controller
+extern NSString * kHRClassParentViewControllerKey;
+/// Key for using body- and url-queries
+extern NSString * kHRClassAttributesUsingBodyAndUrlKey;
 
  
 /**

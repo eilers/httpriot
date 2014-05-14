@@ -8,13 +8,17 @@
 
 #import "HRGlobal.h"
 
-NSString *kHRClassAttributesDelegateKey         = @"delegate";
-NSString *kHRClassAttributesBaseURLKey          = @"baseURL";
-NSString *kHRClassAttributesHeadersKey          = @"headers";
-NSString *kHRClassAttributesBasicAuthKey        = @"basicAuth";
-NSString *kHRClassAttributesUsernameKey         = @"username";
-NSString *kHRClassAttributesPasswordKey         = @"password";
-NSString *kHRClassAttributesFormatKey           = @"format";
-NSString *kHRClassAttributesDefaultParamsKey    = @"defaultParams";
-NSString *kHRClassAttributesParamsKey           = @"params";
-NSString *kHRClassAttributesBodyKey             = @"body";
+NSString * kHRClassAttributesDelegateKey         = @"delegate";
+NSString * kHRClassAttributesBaseURLKey          = @"baseURL";
+NSString * kHRClassAttributesHeadersKey          = @"headers";
+NSString * kHRClassAttributesBasicAuthKey        = @"basicAuth";
+NSString * kHRClassAttributesUsernameKey         = @"username";
+NSString * kHRClassAttributesPasswordKey         = @"password";
+NSString * kHRClassAttributesFormatKey           = @"format";
+NSString * kHRClassAttributesDefaultParamsKey    = @"defaultParams";
+NSString * kHRClassAttributesParamsKey           = @"params";
+NSString * kHRClassAttributesBodyKey             = @"body";
+NSString * kHRClassParentViewControllerKey       = @"parentViewController";
+
+// For using body- and url-queries in all requests
+NSString * kHRClassAttributesUsingBodyAndUrlKey  = @"useBodyAndUrl";

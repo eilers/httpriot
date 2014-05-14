@@ -28,8 +28,6 @@
     NSError *parseError = nil;
     SBJSON *parser = [[SBJSON alloc] init];
     id results = [parser objectWithString:rawString error:&parseError];
-    [parser release];
-    [rawString release];
     
     if(parseError && !results) {  
         if(error != nil)      

@@ -20,7 +20,7 @@
 
 + (id)decode:(NSData *)data error:(NSError **)error {
     NSError *parseError = nil;
-    NSXMLDocument *doc = [[[NSXMLDocument alloc] initWithData:data options:NSXMLDocumentTidyXML error:&parseError] autorelease];
+    NSXMLDocument *doc = [[NSXMLDocument alloc] initWithData:data options:NSXMLDocumentTidyXML error:&parseError];
     
     if(parseError != nil) {        
         if(error != nil)
