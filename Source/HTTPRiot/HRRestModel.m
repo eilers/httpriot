@@ -9,6 +9,7 @@
 #import "HRRestModel.h"
 #import "HRRequestOperation.h"
 #import "HRGlobal.h"
+#import "HRRestWeakReferenceContainer.h"
 
 @interface HRRestModel (PrivateMethods)
 + (void)setAttributeValue:(id)attr forKey:(NSString *)key;
@@ -81,7 +82,9 @@ static NSMutableDictionary *attributes;
 
 + (void)setParentViewController:(UIViewController *)parentViewController
 {
- //   [self setAttributeValue:parentViewController forKey:kHRClassParentViewControllerKey];
+    HRRestWeakReferenceContainer* referenceContainer = [[HRRestWeakReferenceContainer alloc] init];
+    referenceContainer.weakReference = parentViewController;
+    [self setAttributeValue:referenceContainer forKey:kHRClassParentViewControllerKey];
 }
 
 + (HRDataFormat)format {

@@ -58,7 +58,7 @@
     HRChallengeHandler *_currentChallenge;
     
     /// Parent view controller used as root for modal subviews
-    UIViewController *_parentViewController;
+    UIViewController *__weak _parentViewController;
 }
 
 /// The HRResponseDelegate
@@ -104,7 +104,7 @@
 /**
  This view conttroller is used as root for modal subviews.
  */
-@property (nonatomic, strong) UIViewController *parentViewController;
+@property (nonatomic, weak) UIViewController *parentViewController;
 
 /**
  * Returns an HRRequestOperation

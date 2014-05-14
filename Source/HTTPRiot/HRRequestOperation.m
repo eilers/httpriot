@@ -14,6 +14,7 @@
 #import "NSDictionary+ParamUtils.h"
 #import "HRBase64.h"
 #import "HROperationQueue.h"
+#import "HRRestWeakReferenceContainer.h"
 
 @interface HRRequestOperation (PrivateMethods)
 - (NSMutableURLRequest *)http;
@@ -51,7 +52,10 @@
         _timeout        = 30.0;
         _delegate       = [[opts valueForKey:kHRClassAttributesDelegateKey] nonretainedObjectValue];
         _formatter      = [self formatterFromFormat];
-        self.parentViewController = [opts objectForKey:kHRClassParentViewControllerKey];
+        
+        HRRestWeakReferenceContainer* weakContainer = (HRRestWeakReferenceContainer*) [opts objectForKey:kHRClassParentViewControllerKey];
+        NSAssert(weakContainer.weakReference != nil ? [weakContainer.weakReference isKindOfClass:[UIViewController class]] : YES, @"Container contains incorrect class");
+        self.parentViewController = (UIViewController*)weakContainer.weakReference;
     }
 
     return self;

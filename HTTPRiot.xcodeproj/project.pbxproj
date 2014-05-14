@@ -125,6 +125,10 @@
 		F8014E7F11ABC91100F9DD53 /* HRChallengeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F8014E7911ABC91100F9DD53 /* HRChallengeHandler.m */; };
 		F8014E8011ABC91100F9DD53 /* HRChallengeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F8014E7911ABC91100F9DD53 /* HRChallengeHandler.m */; };
 		F8014E8111ABC91100F9DD53 /* HRChallengeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F8014E7911ABC91100F9DD53 /* HRChallengeHandler.m */; };
+		F8A9C3BB19226ED8006EA178 /* HRRestWeakReferenceContainer.h in Sources */ = {isa = PBXBuildFile; fileRef = F8A9C3B919226ED8006EA178 /* HRRestWeakReferenceContainer.h */; };
+		F8A9C3BC19226ED8006EA178 /* HRRestWeakReferenceContainer.h in Sources */ = {isa = PBXBuildFile; fileRef = F8A9C3B919226ED8006EA178 /* HRRestWeakReferenceContainer.h */; };
+		F8A9C3BD19226ED8006EA178 /* HRRestWeakReferenceContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A9C3BA19226ED8006EA178 /* HRRestWeakReferenceContainer.m */; };
+		F8A9C3BE19226ED8006EA178 /* HRRestWeakReferenceContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A9C3BA19226ED8006EA178 /* HRRestWeakReferenceContainer.m */; };
 		F8DD835F191EBD1C00DFC01E /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DD8357191EBD1C00DFC01E /* DDXMLElementAdditions.m */; };
 		F8DD8360191EBD1C00DFC01E /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DD8357191EBD1C00DFC01E /* DDXMLElementAdditions.m */; };
 		F8DD8363191EBD1C00DFC01E /* NSString+DDXML.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DD835A191EBD1C00DFC01E /* NSString+DDXML.m */; };
@@ -286,6 +290,8 @@
 		D0F6D9C60FAB83B1006DE022 /* GHUNSObject+Swizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GHUNSObject+Swizzle.h"; sourceTree = "<group>"; };
 		F8014E7811ABC91100F9DD53 /* HRChallengeHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRChallengeHandler.h; sourceTree = "<group>"; };
 		F8014E7911ABC91100F9DD53 /* HRChallengeHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRChallengeHandler.m; sourceTree = "<group>"; };
+		F8A9C3B919226ED8006EA178 /* HRRestWeakReferenceContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = HRRestWeakReferenceContainer.h; sourceTree = "<group>"; };
+		F8A9C3BA19226ED8006EA178 /* HRRestWeakReferenceContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRRestWeakReferenceContainer.m; sourceTree = "<group>"; };
 		F8DD8356191EBD1C00DFC01E /* DDXMLElementAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = DDXMLElementAdditions.h; sourceTree = "<group>"; };
 		F8DD8357191EBD1C00DFC01E /* DDXMLElementAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLElementAdditions.m; sourceTree = "<group>"; };
 		F8DD8359191EBD1C00DFC01E /* NSString+DDXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = "NSString+DDXML.h"; sourceTree = "<group>"; };
@@ -501,6 +507,8 @@
 				D03982E60FFD6385005FECE7 /* HROperationQueue.m */,
 				D02988FE0F3FB63F00EC8C01 /* HRGlobal.h */,
 				D09C54E910321DE200097202 /* HRGlobal.m */,
+				F8A9C3B919226ED8006EA178 /* HRRestWeakReferenceContainer.h */,
+				F8A9C3BA19226ED8006EA178 /* HRRestWeakReferenceContainer.m */,
 			);
 			path = HTTPRiot;
 			sourceTree = "<group>";
@@ -932,6 +940,7 @@
 				D07744880F4885DA00190554 /* HRRequestOperation.m in Sources */,
 				D07744850F4885AE00190554 /* HRRestModel.m in Sources */,
 				D077448A0F4885DA00190554 /* NSDictionary+ParamUtils.m in Sources */,
+				F8A9C3BB19226ED8006EA178 /* HRRestWeakReferenceContainer.h in Sources */,
 				D0298A960F3FFF2E00EC8C01 /* NSObject+SBJSON.m in Sources */,
 				D0298A980F3FFF2E00EC8C01 /* NSString+SBJSON.m in Sources */,
 				D077448B0F4885DA00190554 /* NSString+EscapingUtils.m in Sources */,
@@ -941,6 +950,7 @@
 				D04EF12F0F65C52D003C6240 /* DDXMLDocument.m in Sources */,
 				D04EF1310F65C52D003C6240 /* DDXMLElement.m in Sources */,
 				F8DD835F191EBD1C00DFC01E /* DDXMLElementAdditions.m in Sources */,
+				F8A9C3BD19226ED8006EA178 /* HRRestWeakReferenceContainer.m in Sources */,
 				D04EF1350F65C52D003C6240 /* DDXMLNode.m in Sources */,
 				D00048250FF35B0E00CCAF1B /* NSObject+InvocationUtils.m in Sources */,
 				D0A6E4160FFD39F100012097 /* HRBase64.m in Sources */,
@@ -986,6 +996,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8A9C3BC19226ED8006EA178 /* HRRestWeakReferenceContainer.h in Sources */,
 				F8DE087A11A6C3F5001DA4FB /* HRFormatJSON.m in Sources */,
 				F8DE087B11A6C3F5001DA4FB /* HRFormatXML.m in Sources */,
 				F8DE087C11A6C3F5001DA4FB /* HRRequestOperation.m in Sources */,
@@ -1000,6 +1011,7 @@
 				F8DE088811A6C3F5001DA4FB /* DDXMLNode.m in Sources */,
 				F8DE088A11A6C3F5001DA4FB /* NSObject+InvocationUtils.m in Sources */,
 				F8DE088B11A6C3F5001DA4FB /* HRBase64.m in Sources */,
+				F8A9C3BE19226ED8006EA178 /* HRRestWeakReferenceContainer.m in Sources */,
 				F8DE088C11A6C3F5001DA4FB /* HROperationQueue.m in Sources */,
 				F8DE088D11A6C3F5001DA4FB /* HRGlobal.m in Sources */,
 				F8DD8364191EBD1C00DFC01E /* NSString+DDXML.m in Sources */,
