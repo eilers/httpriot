@@ -10,6 +10,7 @@
 #import "HRRequestOperation.h"
 #import "HRGlobal.h"
 #import "HRRestWeakReferenceContainer.h"
+#import "NSObject+InvocationUtils.h"
 
 @interface HRRestModel (PrivateMethods)
 + (void)setAttributeValue:(id)attr forKey:(NSString *)key;
@@ -95,6 +96,13 @@ static NSMutableDictionary *attributes;
     [[self classAttributes] setValue:[NSNumber numberWithInt:format] forKey:kHRClassAttributesFormatKey];
 }
 
++ (void)setCache:(id<HRRequestCacheDelegate>)cache
+{
+    HRRestWeakReferenceContainer* referenceContainer = [[HRRestWeakReferenceContainer alloc] init];
+    referenceContainer.weakReference = cache;
+    [self setAttributeValue:referenceContainer forKey:kHRClassCacheImplementationKey];
+}
+
 + (BOOL)useBodyAndUrl {
     return [[[self classAttributes] objectForKey:kHRClassAttributesUsingBodyAndUrlKey] boolValue];
 }
@@ -139,6 +147,28 @@ static NSMutableDictionary *attributes;
 
 + (NSOperation *)requestWithMethod:(HRRequestMethod)method path:(NSString *)path options:(NSDictionary *)options object:(id)obj {
     NSMutableDictionary *opts = [self mergedOptions:options];
+
+    // Check whether we have a cache integrated.
+    HRRestWeakReferenceContainer* weakContainer = (HRRestWeakReferenceContainer*) [opts objectForKey:kHRClassCacheImplementationKey];
+    NSAssert(weakContainer.weakReference != nil ? [weakContainer.weakReference conformsToProtocol:@protocol(HRRequestCacheDelegate)] : YES, @"Container contains object that does not confirms to protocol HRRequestCacheDelegate");
+    if ( weakContainer
+         && weakContainer.weakReference )
+    {
+        id<HRRequestCacheDelegate> cache = (id<HRRequestCacheDelegate>)weakContainer.weakReference;
+        // Ask cache whether we already have the data and return immediately if yes. But we will still make the network
+        // call in order to update with the latest information if they were received.
+        id results = [cache resultForPath:(NSString*)path andOptions:(NSDictionary*)options];
+        
+        if (results)
+        {
+            // Transmit cached data immediately..
+            NSObject<HRResponseDelegate>* delegate = [[opts valueForKey:kHRClassAttributesDelegateKey] nonretainedObjectValue];
+            if([delegate respondsToSelector:@selector(restConnection:didReturnResource:object:)]) {
+                [delegate performSelectorOnMainThread:@selector(restConnection:didReturnResource:object:) withObjects:[NSNull null], results, obj, nil];
+            }
+        }
+    }
+    
     return [HRRequestOperation requestWithMethod:method path:path options:opts object:obj];
 }
 

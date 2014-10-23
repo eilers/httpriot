@@ -7,6 +7,7 @@
 //
 #import <Foundation/Foundation.h>
 #import "HRGlobal.h"
+#import "HRRequestCacheDelegate.h"
 
 @class UIViewController;
 
@@ -146,6 +147,15 @@
  * Set the format used to decode and encode request and responses.
  */
 + (void)setFormat:(HRDataFormat)format;
+
+/**
+ *  Adds a cache implementation.
+ *
+ *  @param cache The implementation of HRRequestCacheDelegate
+ *
+ *  @see HRRequestCacheDelegate
+ */
++ (void)setCache:(id<HRRequestCacheDelegate>)cache;
 //@}
 
 /** 

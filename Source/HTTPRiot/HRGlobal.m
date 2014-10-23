@@ -19,6 +19,7 @@ NSString * kHRClassAttributesDefaultParamsKey    = @"defaultParams";
 NSString * kHRClassAttributesParamsKey           = @"params";
 NSString * kHRClassAttributesBodyKey             = @"body";
 NSString * kHRClassParentViewControllerKey       = @"parentViewController";
+NSString * kHRClassCacheImplementationKey        = @"cacheImplementation";
 
 // For using body- and url-queries in all requests
 NSString * kHRClassAttributesUsingBodyAndUrlKey  = @"useBodyAndUrl";

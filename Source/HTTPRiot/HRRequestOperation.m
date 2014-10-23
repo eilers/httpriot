@@ -15,6 +15,7 @@
 #import "HRBase64.h"
 #import "HROperationQueue.h"
 #import "HRRestWeakReferenceContainer.h"
+#import "HRRequestCacheDelegate.h"
 
 @interface HRRequestOperation (PrivateMethods)
 - (NSMutableURLRequest *)http;
@@ -54,7 +55,7 @@
         _formatter      = [self formatterFromFormat];
         
         HRRestWeakReferenceContainer* weakContainer = (HRRestWeakReferenceContainer*) [opts objectForKey:kHRClassParentViewControllerKey];
-        NSAssert(weakContainer.weakReference != nil ? [weakContainer.weakReference isKindOfClass:[UIViewController class]] : YES, @"Container contains incorrect class");
+        NSAssert(weakContainer.weakReference != nil ? [weakContainer.weakReference isKindOfClass:[UIViewController class]] : YES, @"Container contains incorrect class. Expect: '%@' but get: '%@'", [UIViewController class], [weakContainer.weakReference class]);
         self.parentViewController = (UIViewController*)weakContainer.weakReference;
     }
 
@@ -182,8 +183,19 @@
             return;
         }  
     }
+    
+    // Check whether we have a cache integrated.
+    HRRestWeakReferenceContainer* weakContainer = (HRRestWeakReferenceContainer*) [_options objectForKey:kHRClassCacheImplementationKey];
+    NSAssert(weakContainer.weakReference != nil ? [weakContainer.weakReference conformsToProtocol:@protocol(HRRequestCacheDelegate)] : YES, @"Container contains object that does not confirms to protocol HRRequestCacheDelegate");
+    if ( weakContainer
+        && weakContainer.weakReference )
+    {
+        // Save returned data for later..
+        id<HRRequestCacheDelegate> cache = (id<HRRequestCacheDelegate>)weakContainer.weakReference;
+        [cache setResult:results forConnection:connection path:_path andOptions:_options];
+    }
 
-    if([_delegate respondsToSelector:@selector(restConnection:didReturnResource:object:)]) {        
+    if([_delegate respondsToSelector:@selector(restConnection:didReturnResource:object:)]) {
         [_delegate performSelectorOnMainThread:@selector(restConnection:didReturnResource:object:) withObjects:connection, results, _object, nil];
     }
         

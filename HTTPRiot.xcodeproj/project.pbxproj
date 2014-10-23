@@ -125,6 +125,8 @@
 		F8014E7F11ABC91100F9DD53 /* HRChallengeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F8014E7911ABC91100F9DD53 /* HRChallengeHandler.m */; };
 		F8014E8011ABC91100F9DD53 /* HRChallengeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F8014E7911ABC91100F9DD53 /* HRChallengeHandler.m */; };
 		F8014E8111ABC91100F9DD53 /* HRChallengeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F8014E7911ABC91100F9DD53 /* HRChallengeHandler.m */; };
+		F89D728919F8F88200B5F98F /* HRRequestCacheDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = F89D728819F8F88200B5F98F /* HRRequestCacheDelegate.h */; };
+		F89D728A19F8F88200B5F98F /* HRRequestCacheDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = F89D728819F8F88200B5F98F /* HRRequestCacheDelegate.h */; };
 		F8A9C3BD19226ED8006EA178 /* HRRestWeakReferenceContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A9C3BA19226ED8006EA178 /* HRRestWeakReferenceContainer.m */; };
 		F8A9C3BE19226ED8006EA178 /* HRRestWeakReferenceContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A9C3BA19226ED8006EA178 /* HRRestWeakReferenceContainer.m */; };
 		F8DD835F191EBD1C00DFC01E /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DD8357191EBD1C00DFC01E /* DDXMLElementAdditions.m */; };
@@ -288,6 +290,7 @@
 		D0F6D9C60FAB83B1006DE022 /* GHUNSObject+Swizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GHUNSObject+Swizzle.h"; sourceTree = "<group>"; };
 		F8014E7811ABC91100F9DD53 /* HRChallengeHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRChallengeHandler.h; sourceTree = "<group>"; };
 		F8014E7911ABC91100F9DD53 /* HRChallengeHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRChallengeHandler.m; sourceTree = "<group>"; };
+		F89D728819F8F88200B5F98F /* HRRequestCacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRRequestCacheDelegate.h; sourceTree = "<group>"; };
 		F8A9C3B919226ED8006EA178 /* HRRestWeakReferenceContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = HRRestWeakReferenceContainer.h; sourceTree = "<group>"; };
 		F8A9C3BA19226ED8006EA178 /* HRRestWeakReferenceContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRRestWeakReferenceContainer.m; sourceTree = "<group>"; };
 		F8DD8356191EBD1C00DFC01E /* DDXMLElementAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = DDXMLElementAdditions.h; sourceTree = "<group>"; };
@@ -507,6 +510,7 @@
 				D09C54E910321DE200097202 /* HRGlobal.m */,
 				F8A9C3B919226ED8006EA178 /* HRRestWeakReferenceContainer.h */,
 				F8A9C3BA19226ED8006EA178 /* HRRestWeakReferenceContainer.m */,
+				F89D728819F8F88200B5F98F /* HRRequestCacheDelegate.h */,
 			);
 			path = HTTPRiot;
 			sourceTree = "<group>";
@@ -702,6 +706,7 @@
 				D07744840F4885A700190554 /* HRRestModel.h in Headers */,
 				D03982E70FFD6385005FECE7 /* HROperationQueue.h in Headers */,
 				D09A5D92106E9C3E00167242 /* SBJsonWriter.h in Headers */,
+				F89D728919F8F88200B5F98F /* HRRequestCacheDelegate.h in Headers */,
 				F8014E7C11ABC91100F9DD53 /* HRChallengeHandler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -710,6 +715,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F89D728A19F8F88200B5F98F /* HRRequestCacheDelegate.h in Headers */,
 				F8DE087211A6C3F5001DA4FB /* NSObject+InvocationUtils.h in Headers */,
 				F8DE085C11A6C3F5001DA4FB /* HTTPRiot_Prefix.pch in Headers */,
 				F8DE085D11A6C3F5001DA4FB /* HRGlobal.h in Headers */,

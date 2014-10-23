@@ -27,7 +27,8 @@ extern NSString * kHRClassAttributesBodyKey;
 extern NSString * kHRClassParentViewControllerKey;
 /// Key for using body- and url-queries
 extern NSString * kHRClassAttributesUsingBodyAndUrlKey;
-
+/// Key for storing a cache implementation
+extern NSString * kHRClassCacheImplementationKey;
  
 /**
  * Supported REST methods.
