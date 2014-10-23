@@ -132,7 +132,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - NSURLConnection delegates
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)response {    
-    HRLOG(@"Server responded with:%i, %@", [response statusCode], [NSHTTPURLResponse localizedStringForStatusCode:[response statusCode]]);
+    HRLOG(@"Server responded with:%li, %@", (long)[response statusCode], [NSHTTPURLResponse localizedStringForStatusCode:[response statusCode]]);
     
     if ([_delegate respondsToSelector:@selector(restConnection:didReceiveResponse:object:)]) {
         [_delegate performSelectorOnMainThread:@selector(restConnection:didReceiveResponse:object:) withObjects:connection, response, _object, nil];
@@ -424,7 +424,7 @@
 
 + (id)handleResponse:(NSHTTPURLResponse *)response error:(NSError **)error {
     NSInteger code = [response statusCode];
-    NSUInteger ucode = [[NSNumber numberWithInt:code] unsignedIntValue];
+    NSUInteger ucode = [[NSNumber numberWithInteger:code] unsignedIntValue];
     NSRange okRange = NSMakeRange(200, 201);
     
     if(NSLocationInRange(ucode, okRange)) {
@@ -433,7 +433,7 @@
 
     if(error != nil) {
         NSDictionary *headers = [response allHeaderFields];
-        NSString *errorReason = [NSString stringWithFormat:@"%d Error: ", code];
+        NSString *errorReason = [NSString stringWithFormat:@"%ld Error: ", (long)code];
         NSString *errorDescription = [NSHTTPURLResponse localizedStringForStatusCode:code];
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                    errorReason, NSLocalizedFailureReasonErrorKey,
