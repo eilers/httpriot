@@ -23,3 +23,5 @@ NSString * kHRClassCacheImplementationKey        = @"cacheImplementation";
 
 // For using body- and url-queries in all requests
 NSString * kHRClassAttributesUsingBodyAndUrlKey  = @"useBodyAndUrl";
+
+NSString * kHRClassAttributesEnableCacheKey      = @"enableCache";

@@ -29,6 +29,8 @@ extern NSString * kHRClassParentViewControllerKey;
 extern NSString * kHRClassAttributesUsingBodyAndUrlKey;
 /// Key for storing a cache implementation
 extern NSString * kHRClassCacheImplementationKey;
+/// Key for explicitly setting whether or not to cache a request (With no value set caching is enabled).
+extern NSString * kHRClassAttributesEnableCacheKey;
  
 /**
  * Supported REST methods.

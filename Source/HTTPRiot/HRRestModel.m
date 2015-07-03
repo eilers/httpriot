@@ -147,12 +147,22 @@ static NSMutableDictionary *attributes;
 
 + (NSOperation *)requestWithMethod:(HRRequestMethod)method path:(NSString *)path options:(NSDictionary *)options object:(id)obj {
     NSMutableDictionary *opts = [self mergedOptions:options];
+    
+    // Per default caching is enabled.
+    BOOL enableCache = YES;
+    
+    NSNumber* enableCacheNumber = [opts objectForKey: kHRClassAttributesEnableCacheKey];
+    if ( [enableCacheNumber isKindOfClass: [NSNumber class]] )
+    {
+        enableCache = [enableCacheNumber boolValue];
+    }
 
     // Check whether we have a cache integrated.
     HRRestWeakReferenceContainer* weakContainer = (HRRestWeakReferenceContainer*) [opts objectForKey:kHRClassCacheImplementationKey];
     NSAssert(weakContainer.weakReference != nil ? [weakContainer.weakReference conformsToProtocol:@protocol(HRRequestCacheDelegate)] : YES, @"Container contains object that does not confirms to protocol HRRequestCacheDelegate");
     if ( weakContainer
-         && weakContainer.weakReference )
+         && weakContainer.weakReference
+         && enableCache)
     {
         id<HRRequestCacheDelegate> cache = (id<HRRequestCacheDelegate>)weakContainer.weakReference;
         // Ask cache whether we already have the data and return immediately if yes. But we will still make the network
