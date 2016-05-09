@@ -19,6 +19,9 @@
 
 - (void)addAttributeWithName:(NSString *)name stringValue:(NSString *)string;
 
-- (NSDictionary *)attributesAsDictionary;
+/**
+ Seems to be not used anywhere, so we renamed it to alt... avoiding conflicts with other categories.
+ */
+- (NSDictionary *)altAttributesAsDictionary;
 
 @end
