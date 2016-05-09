@@ -113,7 +113,7 @@
 /**
  * Returns all the attributes as a dictionary.
 **/
-- (NSDictionary *)attributesAsDictionary
+- (NSDictionary *)altAttributesAsDictionary
 {
 	NSArray *attributes = [self attributes];
 	NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:[attributes count]];
